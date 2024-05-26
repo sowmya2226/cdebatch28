@@ -1,0 +1,13 @@
+CREATE DATABASE IF NOT EXISTS raw_db
+LOCATION 'gs://cde1705/raw.db';
+
+USE raw_db;
+
+CREATE OR REPLACE TEMPORARY VIEW orders_v
+USING JSON
+OPTIONS(
+path='gs://cde1705/source/orders.json'
+);
+CREATE TABLE IF NOT EXISTS orders
+USING PARQUET
+SELECT * FROM orders_v;
